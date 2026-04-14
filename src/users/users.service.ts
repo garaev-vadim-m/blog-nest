@@ -12,7 +12,7 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     const user = this.usersRepository.create(createUserDto);
     return this.usersRepository.save(user);
   }
@@ -45,5 +45,9 @@ export class UsersService {
     return {
       message: 'User deleted successfully',
     };
+  }
+
+  async findByEmail(email: string) {
+    return this.usersRepository.findOneBy({ email });
   }
 }
