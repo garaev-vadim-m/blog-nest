@@ -1,24 +1,17 @@
-FROM node:20-alpine AS builder
-
+FROM node:20-alpine
 WORKDIR /app
 
+# зависимости
 COPY package*.json ./
 RUN npm install
 
+# код
 COPY . .
 
-RUN npm run build
-
-
-FROM node:20-alpine
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm install --only=production
-
-COPY --from=builder /app/dist ./dist
+# инструменты + fix CRLF + права
+RUN apk add --no-cache netcat-openbsd \
+    && sed -i 's/\r//' *.sh \
+    && chmod +x *.sh
 
 EXPOSE 3000
-
-CMD ["node", "dist/main.js"]
+CMD ["sh", "./dev.sh"]
