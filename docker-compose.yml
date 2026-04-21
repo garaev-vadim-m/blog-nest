@@ -1,9 +1,9 @@
 services:
   blogs:
-    build: ./blogs
+    build: ./
     container_name: blogs_api
     volumes:
-      - ./blogs:/app
+      - ./:/app
       - /app/node_modules
     depends_on:
       - db
